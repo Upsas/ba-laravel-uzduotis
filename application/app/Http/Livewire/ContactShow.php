@@ -14,9 +14,17 @@ use Livewire\WithPagination;
 class ContactShow extends Component
 {
 
-    protected $listeners = ['refresh' => '$refresh'];
+    public $contactId;
+    public $showModal = false;
+    protected $listeners = ['refresh' => '$refresh', 'delete'];
 
     use WithPagination;
+
+    public function setData(int $contactId, bool $showModal): void
+    {
+        $this->contactId = $contactId;
+        $this->showModal = $showModal;
+    }
 
     /**
      * @throws Exception
@@ -25,6 +33,12 @@ class ContactShow extends Component
     {
         $contactsRepo->destroy($contactId);
         session()->flash('message', 'Contact successfully deleted.');
+        $this->reset();
+    }
+
+    public function share(int $contactId): void
+    {
+        $this->emit('showShareForm', $contactId);
     }
 
     public function edit(int $contactId): void
@@ -34,9 +48,10 @@ class ContactShow extends Component
 
     public function render(ContactsRepository $contactsRepo): Factory|View|Application
     {
-        return view('livewire.contact-show', ['contacts' => $contactsRepo->getAllContactsByUserIdWithPagination([
-            'userId' => Auth::id(),
-            'perPage' => 6
-        ]) ]);
+        return view('livewire.contact-show', [
+            'contacts' => $contactsRepo->getAllContactsByUserIdWithPagination([
+                'userId' => Auth::id(),
+                'perPage' => 6
+            ])]);
     }
 }

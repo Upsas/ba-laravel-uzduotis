@@ -4,4 +4,5 @@
         @livewire('contact-form')
     </div>
         @livewire('contact-show')
+
 </x-app-layout>

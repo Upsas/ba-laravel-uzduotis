@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Contact;
+use App\Models\SharedContact;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 class ContactsRepository
 {
@@ -13,6 +15,11 @@ class ContactsRepository
      */
     public function create(Contact $contact): Contact
     {
+
+        if(!Contact::where('number', $contact->number)->where('user_id', Auth::id())->get()->isEmpty()) {
+            throw new Exception('failed to create because number is duplicate');
+        }
+
         if (!$contact->save()) {
             throw new Exception('failed to create new record');
         }
@@ -33,6 +40,7 @@ class ContactsRepository
      */
     public function destroy(int $contactId): void
     {
+        SharedContact::where('contact_id', $contactId)->delete();
         if (!Contact::destroy($contactId)) {
             throw new Exception("failed to delete record with id $contactId");
         }

@@ -16,6 +16,11 @@
                         {{ __('Contacts') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:items-center sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('shared-contacts')" :active="request()->routeIs('shared-contacts')">
+                        {{ __('Shared contacts') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

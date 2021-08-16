@@ -1,4 +1,4 @@
-<div>
+<div class="pt-6">
     @if (session()->has('message'))
         <div id="successMessageDelete" wire:poll.visible class="flex justify-center items-center">
             <div
@@ -14,27 +14,37 @@
             </div>
         </div>
     @endif
-
     <div class="flex flex-col ">
         <table class="rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800">
             <tr class="text-left border-b-2 border-gray-300">
                 <th class="px-4 py-3">Name</th>
                 <th class="px-4 py-3">Number</th>
+                <th class="px-4 py-3">Shared</th>
                 <th class="px-4 py-3">Action</th>
             </tr>
             @forelse($contacts as $contact)
                 <tr class="bg-gray-100 border-b border-gray-200">
                     <td class="px-4 py-3">
-                        {{$contact->name}}
+                        {{$contact->getSharedContact()->name }}
                     </td>
                     <td class="px-4 py-3">
-                        {{$contact->number}}
+                        {{$contact->getSharedContact()->number }}
                     </td>
                     <td class="px-4 py-3">
-                        <x-buttons.delete-button wire:click="setData({{$contact->id}}, true)">Delete
+                        @if( $contact->getUserWhomSharedContact()->name === auth()->user()->name)
+                            {{$contact->getUserWhichSharedContact()->name}}
+                        @endif
+                        {{$contact->getUserWhomSharedContact()->name}}
+                    </td>
+                    <td class="px-4 py-3">
+                        <x-buttons.delete-button wire:click="delete({{$contact->getSharedContact()->id }})">
+                            Delete
                         </x-buttons.delete-button>
-                        <x-buttons.edit-button wire:click="edit({{$contact->id}})">Edit</x-buttons.edit-button>
-                        <x-buttons.share-button wire:click="share({{$contact->id}})"></x-buttons.share-button>
+                        @if( $contact->getUserWhomSharedContact()->name !== auth()->user()->name)
+                            <x-buttons.edit-button wire:click="edit({{$contact->getSharedContact()->id }})">
+                                Edit
+                            </x-buttons.edit-button>
+                        @endif
                     </td>
                 </tr>
             @empty
@@ -47,12 +57,8 @@
         </table>
         <div class="fixed inset-x-0 bottom-0">
             <div class="w-3/4 mx-auto mb-8">
-                {{ $contacts->links() }}
+                {{--                {{ $contacts->links() }}--}}
             </div>
         </div>
     </div>
-    @if($showModal)
-        <x-modal-delete-confirmation contactId="{{$contactId}}"></x-modal-delete-confirmation>
-    @endif
-    @livewire('share-form')
 </div>

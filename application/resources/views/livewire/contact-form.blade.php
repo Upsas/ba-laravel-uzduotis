@@ -1,10 +1,7 @@
 <div class="">
-
-
     <div class="mx-auto w-5/6  flex justify-end">
         <x-buttons.add-button class="flex justify-end" wire:click="add">
             <h1 class="ml-2"> Add contact</h1>
-
         </x-buttons.add-button>
     </div>
     <div
