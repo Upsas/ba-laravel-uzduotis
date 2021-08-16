@@ -14,6 +14,8 @@ use Livewire\WithPagination;
 class ContactShow extends Component
 {
 
+    protected $listeners = ['refresh' => '$refresh'];
+
     use WithPagination;
 
     /**
@@ -23,7 +25,6 @@ class ContactShow extends Component
     {
         $contactsRepo->destroy($contactId);
         session()->flash('message', 'Contact successfully deleted.');
-        $this->refresh();
     }
 
     public function edit(int $contactId): void
