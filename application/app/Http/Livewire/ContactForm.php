@@ -21,7 +21,6 @@ class ContactForm extends Component
     public $method = 'create';
     public $title = 'Add new contact';
     public $button = 'add';
-    public $flashMessageColor = 'green';
 
     protected $listeners = ['edit'];
 
@@ -38,8 +37,7 @@ class ContactForm extends Component
         $validatedData = $this->validate();
         $validatedData['user_id'] = Auth::id();
         $contactsRepo->create(new Contact($validatedData));
-        $this->flashMessageColor = 'green';
-        session()->flash('message', 'Contact successfully created.');
+        $this->emit('flashMessage', 'Contact successfully created.', 'green');
         $this->emit('refresh');
         $this->reset();
     }
@@ -66,9 +64,8 @@ class ContactForm extends Component
         $validatedData = ($this->validate());
         $validatedData['user_id'] = Auth::id();
         $contactsRepo->findOneById($this->contactId)->update($validatedData);
-        session()->flash('message', 'Contact successfully updated.');
+        $this->emit('flashMessage', 'Contact successfully updated.', 'blue');
         $this->reset();
-        $this->flashMessageColor = 'blue';
         $this->emit('refresh');
     }
 

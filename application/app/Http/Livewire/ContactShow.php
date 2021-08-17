@@ -32,7 +32,7 @@ class ContactShow extends Component
     public function delete(int $contactId, ContactsRepository $contactsRepo): void
     {
         $contactsRepo->destroy($contactId);
-        session()->flash('message', 'Contact successfully deleted.');
+        $this->emit('flashMessage', 'Contact successfully deleted.', 'red');
         $this->reset();
     }
 

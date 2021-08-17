@@ -1,20 +1,5 @@
 <div>
-    @if (session()->has('message'))
-        <div id="successMessageDelete" wire:poll.visible class="flex justify-center items-center">
-            <div
-                class=" w-1/2  py-3 px-5  bg-red-100 text-red-900 text-sm rounded-md border border-red-200 flex items-center justify-between"
-                role="alert">
-                <span>{{ session('message') }}</span>
-                <button class="w-4" type="button" data-dismiss="alert" aria-label="Close"
-                        onclick="this.parentElement.remove();">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    @endif
-
+@livewire('flash-message')
     <div class="flex flex-col ">
         <table class="rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800">
             <tr class="text-left border-b-2 border-gray-300">
@@ -54,5 +39,6 @@
     @if($showModal)
         <x-modal-delete-confirmation contactId="{{$contactId}}"></x-modal-delete-confirmation>
     @endif
+{{--        TODO AFTER SHARE FLASH MESSAGE + REDIRECT--}}
     @livewire('share-form')
 </div>
