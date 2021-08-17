@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Contact;
 use App\Repositories\ContactsRepository;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -51,25 +50,22 @@ class ContactShow extends Component
         $this->emit('edit', $contactId);
     }
 
-    public function setContactsAndSearch(ContactsRepository $contactsRepo) {
-        if($this->contactSearchKeyword ===null) {
-            $this->contacts =  $contactsRepo->getAllContactsByUserIdWithPagination([
-                'userId' => Auth::id(),
-                'perPage' => 6
-            ]);
-        } else {
-            $searchKeyword = $this->contactSearchKeyword;
-            $this->contacts = (Contact::where('user_id', Auth::id())
-                ->where(function($query) use ($searchKeyword) {
-                $query->where('name', 'LIKE', "%$searchKeyword%")
-                    ->orWhere('number', 'LIKE', "%$searchKeyword%");})->orderBy('name')->paginate(6));
-        }
-    }
-
     public function render(ContactsRepository $contactsRepo): Factory|View|Application
     {
         $this->setContactsAndSearch($contactsRepo);
         return view('livewire.contact-show', [
             'contacts' => $this->contacts]);
+    }
+
+    public function setContactsAndSearch(ContactsRepository $contactsRepo)
+    {
+        if ($this->contactSearchKeyword === null) {
+            $this->contacts = $contactsRepo->getAllContactsByUserIdWithPagination([
+                'userId' => Auth::id(),
+                'perPage' => 6
+            ]);
+        } else {
+            $this->contacts = $contactsRepo->searchContacts($this->contactSearchKeyword, 6);
+        }
     }
 }

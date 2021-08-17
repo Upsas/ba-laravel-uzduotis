@@ -16,7 +16,7 @@ class ContactsRepository
     public function create(Contact $contact): Contact
     {
 
-        if(!Contact::where('number', $contact->number)->where('user_id', Auth::id())->get()->isEmpty()) {
+        if (!Contact::where('number', $contact->number)->where('user_id', Auth::id())->get()->isEmpty()) {
             throw new Exception('failed to create because number is duplicate');
         }
 
@@ -56,6 +56,15 @@ class ContactsRepository
             throw new Exception("failed to find record with id $contactId");
         }
         return $contact;
+    }
+
+    public function searchContacts(string $searchKeyword, int $perPage): LengthAwarePaginator
+    {
+        return Contact::where('user_id', Auth::id())
+            ->where(function ($query) use ($searchKeyword) {
+                $query->where('name', 'LIKE', "%$searchKeyword%")
+                    ->orWhere('number', 'LIKE', "%$searchKeyword%");
+            })->orderBy('name')->paginate($perPage);
     }
 
 }
