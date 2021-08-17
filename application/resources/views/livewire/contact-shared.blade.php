@@ -57,7 +57,7 @@
         </table>
         <div class="fixed inset-x-0 bottom-0">
             <div class="w-3/4 mx-auto mb-8">
-                {{--                {{ $contacts->links() }}--}}
+                                {{ $contacts->links() }}
             </div>
         </div>
     </div>

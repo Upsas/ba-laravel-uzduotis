@@ -1,6 +1,6 @@
 <div>
     <div
-        class="{{$show}} my-auto overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
+        class="{{$showShareForm}} my-auto overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
         id="modal-id-share">
         <div class="relative w-5/12	 my-6 mx-auto max-w-3xl">
             <!--content-->
@@ -51,5 +51,5 @@
             </div>
         </div>
     </div>
-    <div class="{{$show}} opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-share-backdrop"></div>
+    <div class="{{$showShareForm}} opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-share-backdrop"></div>
 </div>

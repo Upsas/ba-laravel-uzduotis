@@ -47,6 +47,7 @@ class ContactForm extends Component
      */
     public function edit(int $contactId, ContactsRepository $contactsRepo): void
     {
+        $this->resetValidation();
         $data = $contactsRepo->findOneById($contactId);
 
         $this->show = 'flex';

@@ -2,17 +2,21 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\SharedContact;
-use App\Repositories\ContactsRepository;
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\SharedContactsRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ContactShared extends Component
 {
-    public function render(ContactsRepository $contactsRepo)
+    use WithPagination;
+
+    public function render(SharedContactsRepository $sharedContactsRepo): Factory|View|Application
     {
         return view('livewire.contact-shared', [
-            'contacts' => SharedContact::where('contact_shared_user_id', Auth::id())->orWhere('user_id', Auth::id())->get()
+            'contacts' => $sharedContactsRepo->getSharedContactsWithPagination(6)
         ]);
     }
 }
