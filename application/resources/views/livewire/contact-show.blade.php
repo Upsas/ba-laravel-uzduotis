@@ -1,5 +1,5 @@
 <div>
-@livewire('flash-message')
+    @livewire('flash-message')
     <div class="flex flex-col ">
         <table class="rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800">
             <tr class="text-left border-b-2 border-gray-300">
@@ -36,9 +36,9 @@
             </div>
         </div>
     </div>
+    @livewire('share-form')
+
     @if($showModal)
         <x-modal-delete-confirmation contactId="{{$contactId}}"></x-modal-delete-confirmation>
     @endif
-{{--        TODO AFTER SHARE FLASH MESSAGE + REDIRECT--}}
-    @livewire('share-form')
 </div>

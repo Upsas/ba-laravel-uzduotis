@@ -59,6 +59,9 @@ class ContactForm extends Component
         $this->number = $data->number;
     }
 
+    /**
+     * @throws Exception
+     */
     public function update(ContactsRepository $contactsRepo): void
     {
 

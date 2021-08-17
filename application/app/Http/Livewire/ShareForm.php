@@ -5,9 +5,12 @@ namespace App\Http\Livewire;
 use App\Models\Contact;
 use App\Models\SharedContact;
 use App\Models\User;
+use App\Repositories\SharedContactsRepository;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -25,17 +28,20 @@ class ShareForm extends Component
         $this->contact = Contact::find($contactId);
     }
 
-    public function share(): void
+    /**
+     * @throws Exception
+     */
+    public function share(SharedContactsRepository $sharedContactsRepo): void
     {
-
         $allItems =
             [
                 'user_id' => Auth::id(),
                 'contact_id' => $this->contact->id,
                 'contact_shared_user_id' => $this->userId
             ];
-        (new SharedContact($allItems))->save();
+        $sharedContactsRepo->saveSharedContact(new SharedContact($allItems));
         $this->emit('flashMessage', 'Contact successfully shared.', 'purple');
+        $this->showShareForm = 'hidden';
     }
 
     public function render(): Factory|View|Application
