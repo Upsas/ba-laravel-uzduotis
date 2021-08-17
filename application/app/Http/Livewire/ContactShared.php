@@ -74,7 +74,7 @@ class ContactShared extends Component
             if ($this->contactSearchKeyword === null) {
                 $this->contacts = $sharedContactsRepo->getSharedContactsWithPagination(6);
             } else {
-                $this->contacts = $sharedContactsRepo->searchSharedContacts($this->contactSearchKeyword, 6);
+                $this->contacts = $sharedContactsRepo->search('searchSharedContacts', $this->contactSearchKeyword, 6);
             }
         } else {
             $this->filter($sharedContactsRepo);
@@ -88,14 +88,14 @@ class ContactShared extends Component
                 if ($this->contactSearchKeyword === null) {
                     $this->contacts = SharedContact::where('contact_shared_user_id', Auth::id())->paginate(6);
                 } else {
-                    $this->contacts = $sharedContactsRepo->searchSharedContactsWithMe($this->contactSearchKeyword, 6);
+                    $this->contacts = $sharedContactsRepo->search('searchSharedContactsWithMe', $this->contactSearchKeyword, 6);
                 }
                 break;
             case 'sharedWithOther':
                 if ($this->contactSearchKeyword === null) {
                     $this->contacts = SharedContact::where('user_id', Auth::id())->paginate(6);
                 } else {
-                    $this->contacts = $sharedContactsRepo->searchSharedContactsWithOthers($this->contactSearchKeyword, 6);
+                    $this->contacts = $sharedContactsRepo->search('searchSharedContactsWithOthers', $this->contactSearchKeyword, 6);
                 }
                 break;
 
