@@ -1,4 +1,11 @@
 <div>
+    <div class="pt-6 mb-2">
+        <div class="flex mx-auto justify-between items-center w-5/6">
+            <x-search></x-search>
+        @livewire('contact-form')
+        </div>
+    </div>
+
     @livewire('flash-message')
     <div class="flex flex-col ">
         <table class="rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800">
@@ -8,7 +15,7 @@
                 <th class="px-4 py-3">Action</th>
             </tr>
             @forelse($contacts as $contact)
-                <tr class="bg-gray-100 border-b border-gray-200">
+                <tr wire:loading.class.delay="opacity-50" class="bg-gray-100 border-b border-gray-200">
                     <td class="px-4 py-3">
                         {{$contact->name}}
                     </td>
@@ -24,8 +31,8 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3">
-                        <h1>Its empty</h1>
+                    <td class="text-center p-5" colspan="3">
+                        <h1 class="text-xl">Its empty</h1>
                     </td>
                 </tr>
             @endforelse

@@ -1,9 +1,7 @@
 <div class="">
-    <div class="mx-auto w-5/6  flex justify-end">
-        <x-buttons.add-button class="flex justify-end" wire:click="add">
+        <x-buttons.add-button class="mt-2 flex justify-end" wire:click="add">
             <h1 class="ml-2"> Add contact</h1>
         </x-buttons.add-button>
-    </div>
     <div
         class="{{$show}} my-auto overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
         id="modal-id">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Livewire\ContactShared;
+use App\Http\Livewire\ContactShow;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,8 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('login');
 });
+
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', ContactShow::class)->name('dashboard');
     Route::get('/shared-contacts', ContactShared::class)->name('shared-contacts');
 });
 

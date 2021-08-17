@@ -1,4 +1,16 @@
 <div class="pt-6">
+    <div class="mb-2">
+        <div class="flex mx-auto  items-center w-5/6">
+            <select class="rounded-2xl">
+                <option>All</option>
+                <option>Shared with me</option>
+                <option>Shared with other</option>
+            </select>
+            <div class="mx-auto">
+            <x-search></x-search>
+            </div>
+        </div>
+    </div>
     @livewire('flash-message')
     <div class="flex flex-col ">
         <table class="rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800">
@@ -27,15 +39,15 @@
                     <td class="px-4 py-3">
 
                         @if( $contact->getUserWhomSharedContact()->name === auth()->user()->name)
-                            <x-buttons.delete-button wire:click="deleteShared({{$contact->id }})">
+                            <x-buttons.delete-button wire:click="deleteShared({{$contact->getSharedContact()->getSharedContact()->id }})">
                                 Delete
                             </x-buttons.delete-button>
                             <x-buttons.add-button
                                 iconSize="lg"
-                                wire:click="addContact({{$contact->getSharedContact()->id }}, {{$contact->id}})"
+                                wire:click="addContact({{$contact->getSharedContact()->id }}, {{$contact->getSharedContact()->getSharedContact()->id}})"
                             ></x-buttons.add-button>
                         @else
-                            <x-buttons.cancel-button wire:click="cancel({{$contact->id }})">
+                            <x-buttons.cancel-button wire:click="cancel({{$contact->getSharedContact()->getSharedContact()->id }})">
                             </x-buttons.cancel-button>
                         @endif
                     </td>

@@ -13,16 +13,16 @@ class SharedContact extends Model
 
     public function getSharedContact(): Model
     {
-        return $this->hasMany(Contact::class, 'id', 'contact_id')->first();
+        return $this->belongsTo(Contact::class, 'contact_id', 'id')->first();
     }
-
+//
     public function getUserWhomSharedContact(): Model
     {
-        return $this->hasMany(User::class, 'id', 'contact_shared_user_id')->first();
+        return $this->belongsTo(User::class, 'contact_shared_user_id', 'id')->first();
     }
 
     public function getUserWhichSharedContact(): Model
     {
-        return $this->hasMany(User::class, 'id', 'user_id')->first();
+        return $this->belongsTo(User::class, 'user_id', 'id')->first();
     }
 }

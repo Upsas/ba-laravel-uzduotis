@@ -17,7 +17,8 @@ class SharedContactsRepository
 
     public function getSharedContactsWithPagination(int $perPage): LengthAwarePaginator
     {
-        return SharedContact::where('contact_shared_user_id', Auth::id())->orWhere('user_id', Auth::id())->paginate($perPage);
+        return SharedContact::where('shared_contacts.user_id', Auth::id())->orWhere('shared_contacts.contact_shared_user_id', Auth::id())->join('contacts', 'contacts.id', '=', 'shared_contacts.contact_id')->orderBy('name')
+            ->paginate($perPage);
     }
 
     /**
@@ -37,6 +38,7 @@ class SharedContactsRepository
      */
     public function destroy(int $contactId): void
     {
+
         if (!SharedContact::destroy($contactId)) {
             throw new Exception("failed to stop share contact whom id: $contactId");
         }

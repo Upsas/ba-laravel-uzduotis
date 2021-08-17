@@ -20,4 +20,18 @@ class Contact extends Model
 
     protected $guarded = [];
 
+    public function getSharedContact(): ?Model
+    {
+        return $this->hasMany(SharedContact::class, 'contact_id', 'id')->first();
+    }
+
+    public function getUserWhomSharedContact(): Model
+    {
+        return $this->hasMany(User::class, 'id', 'contact_shared_user_id')->first();
+    }
+
+    public function getUserWhichSharedContact(): Model
+    {
+        return $this->hasMany(User::class, 'id', 'user_id')->first();
+    }
 }
