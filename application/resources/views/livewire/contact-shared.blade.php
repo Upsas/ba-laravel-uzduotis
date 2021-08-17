@@ -1,10 +1,10 @@
 <div class="pt-6">
     <div class="mb-2">
         <div class="flex mx-auto  items-center w-5/6">
-            <select class="rounded-2xl">
-                <option>All</option>
-                <option>Shared with me</option>
-                <option>Shared with other</option>
+            <select wire:model="filterOption" class="rounded-2xl">
+                <option value="">All</option>
+                <option value="sharedWithMe">Shared with me</option>
+                <option value="sharedWithOther">Shared with other</option>
             </select>
             <div class="mx-auto">
             <x-search></x-search>
@@ -21,7 +21,7 @@
                 <th class="px-4 py-3">Action</th>
             </tr>
             @forelse($contacts as $contact)
-                <tr class="bg-gray-100 border-b border-gray-200">
+                <tr wire:loading.class.delay="opacity-50" class="bg-gray-100 border-b border-gray-200">
                     <td class="px-4 py-3">
                         {{$contact->getSharedContact()->name }}
                     </td>
@@ -53,9 +53,9 @@
                     </td>
                 </tr>
             @empty
-                <tr>
-                    <td colspan="3">
-                        <h1>Its empty</h1>
+                <tr wire:loading.class.delay="opacity-50">
+                    <td class="text-center p-5 bg-gray-100" colspan="4">
+                        <h1 class="text-xl">Its empty</h1>
                     </td>
                 </tr>
             @endforelse

@@ -68,4 +68,30 @@ class SharedContactsRepository
                     });
             })->orderBy('name')->paginate($perPage);
     }
+
+    public function searchSharedContactsWithMe(string $searchKeyword, int $perPage): LengthAwarePaginator
+    {
+        return SharedContact::where('shared_contacts.contact_shared_user_id', Auth::id())
+            ->join
+            ('contacts', function ($join) use ($searchKeyword) {
+                $join->on('shared_contacts.contact_id', '=', 'contacts.id')
+                    ->where(function ($query) use ($searchKeyword) {
+                        $query->where('name', 'LIKE', "%$searchKeyword%")
+                            ->orWhere('number', 'LIKE', "%$searchKeyword%");
+                    });
+            })->orderBy('name')->paginate($perPage);
+    }
+
+    public function searchSharedContactsWithOthers(string $searchKeyword, int $perPage): LengthAwarePaginator
+    {
+        return SharedContact::where('shared_contacts.user_id', Auth::id())
+            ->join
+            ('contacts', function ($join) use ($searchKeyword) {
+                $join->on('shared_contacts.contact_id', '=', 'contacts.id')
+                    ->where(function ($query) use ($searchKeyword) {
+                        $query->where('name', 'LIKE', "%$searchKeyword%")
+                            ->orWhere('number', 'LIKE', "%$searchKeyword%");
+                    });
+            })->orderBy('name')->paginate($perPage);
+    }
 }

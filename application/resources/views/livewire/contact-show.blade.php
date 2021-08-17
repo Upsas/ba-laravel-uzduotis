@@ -2,7 +2,7 @@
     <div class="pt-6 mb-2">
         <div class="flex mx-auto justify-between items-center w-5/6">
             <x-search></x-search>
-        @livewire('contact-form')
+            @livewire('contact-form')
         </div>
     </div>
 

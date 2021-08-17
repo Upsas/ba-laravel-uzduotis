@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\SharedContact;
 use App\Repositories\SharedContactsRepository;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,7 +21,8 @@ class ContactShared extends Component
     public $contactSearchKeyword;
     public $message = 'Are you sure want to stop sharing?';
     public $buttonName = 'Stop';
-    protected $listeners = ['delete'];
+    public $filterOption = "";
+    protected $listeners = ['delete', 'filter'];
 
     public function cancel(int $contactId): void
     {
@@ -65,12 +68,38 @@ class ContactShared extends Component
         ]);
     }
 
-    public function setContactsAndSearch(SharedContactsRepository $sharedContactsRepo)
+    public function setContactsAndSearch(SharedContactsRepository $sharedContactsRepo): void
     {
-        if ($this->contactSearchKeyword === null) {
-            $this->contacts = $sharedContactsRepo->getSharedContactsWithPagination(6);
+        if (empty($this->filterOption)) {
+            if ($this->contactSearchKeyword === null) {
+                $this->contacts = $sharedContactsRepo->getSharedContactsWithPagination(6);
+            } else {
+                $this->contacts = $sharedContactsRepo->searchSharedContacts($this->contactSearchKeyword, 6);
+            }
         } else {
-            $this->contacts = $sharedContactsRepo->searchSharedContacts($this->contactSearchKeyword, 6);
+            $this->filter($sharedContactsRepo);
         }
     }
+
+    public function filter(SharedContactsRepository $sharedContactsRepo): void
+    {
+        switch ($this->filterOption) {
+            case 'sharedWithMe':
+                if ($this->contactSearchKeyword === null) {
+                    $this->contacts = SharedContact::where('contact_shared_user_id', Auth::id())->paginate(6);
+                } else {
+                    $this->contacts = $sharedContactsRepo->searchSharedContactsWithMe($this->contactSearchKeyword, 6);
+                }
+                break;
+            case 'sharedWithOther':
+                if ($this->contactSearchKeyword === null) {
+                    $this->contacts = SharedContact::where('user_id', Auth::id())->paginate(6);
+                } else {
+                    $this->contacts = $sharedContactsRepo->searchSharedContactsWithOthers($this->contactSearchKeyword, 6);
+                }
+                break;
+
+        }
+    }
+
 }
