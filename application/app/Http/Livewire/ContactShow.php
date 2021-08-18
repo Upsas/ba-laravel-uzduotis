@@ -34,7 +34,6 @@ class ContactShow extends Component
      */
     public function delete(int $contactId, ContactsRepository $contactsRepo): void
     {
-        $contactsRepo->destroy($contactId);
         $this->emit('flashMessage', 'Contact successfully deleted.', 'red');
         $this->reset();
     }
@@ -57,7 +56,7 @@ class ContactShow extends Component
             'contacts' => $this->contacts]);
     }
 
-    public function setContactsAndSearch(ContactsRepository $contactsRepo)
+    public function setContactsAndSearch(ContactsRepository $contactsRepo): void
     {
         if ($this->contactSearchKeyword === null) {
             $this->contacts = $contactsRepo->getAllContactsByUserIdWithPagination([

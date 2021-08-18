@@ -15,9 +15,23 @@ class SharedContactsRepository
     {
     }
 
-    public function getSharedContactsWithPagination(int $perPage): LengthAwarePaginator
+    public function getSharedContactsWithPagination(int $perPage = 6): LengthAwarePaginator
     {
-        return SharedContact::where('shared_contacts.user_id', Auth::id())->orWhere('shared_contacts.contact_shared_user_id', Auth::id())->join('contacts', 'contacts.id', '=', 'shared_contacts.contact_id')->orderBy('name')
+        return SharedContact::where('shared_contacts.user_id', Auth::id())
+            ->orWhere('shared_contacts.contact_shared_user_id', Auth::id())
+            ->join('contacts', 'contacts.id', '=', 'shared_contacts.contact_id')->orderBy('name')
+            ->paginate($perPage);
+    }
+
+    public function getSharedContactsForApi(int $perPage)
+    {
+
+        return SharedContact::where('shared_contacts.user_id', Auth::id())
+            ->orWhere('shared_contacts.contact_shared_user_id', Auth::id())
+            ->leftJoin('contacts', 'contacts.id', '=', 'shared_contacts.contact_id')
+            ->join('users', 'users.id', '=', 'shared_contacts.contact_shared_user_id')
+            ->select('shared_contacts.user_id as UserId', 'shared_contacts.id', 'contacts.name as ContactName', 'contacts.number', 'users.name as Contact Shared With')
+            ->orderBy('contacts.name')
             ->paginate($perPage);
     }
 
@@ -38,7 +52,9 @@ class SharedContactsRepository
      */
     public function destroy(int $contactId): void
     {
-
+        if (SharedContact::where('id', $contactId)->where('user_id', Auth::id())->orWhere('contact_shared_user_id', Auth::id())->first() === null) {
+            throw new Exception("there is no contact with id: $contactId");
+        }
         if (!SharedContact::destroy($contactId)) {
             throw new Exception("failed to stop share contact whom id: $contactId");
         }
@@ -55,7 +71,21 @@ class SharedContactsRepository
         $this->contactsRepository->create(new Contact($contact->toArray()));
     }
 
-    public function search(string $searchType, string $searchKeyword, int $perPage): LengthAwarePaginator
+    /**
+     * @throws Exception
+     */
+    public function getContactSharedWithSelf(int $sharedContactId): SharedContact
+    {
+        $contact = SharedContact::where('id', $sharedContactId)
+            ->where('contact_shared_user_id', Auth::id())
+            ->first();
+        if ($contact === null) {
+            throw new Exception("there is no contact with id: $sharedContactId");
+        }
+        return $contact;
+    }
+
+    public function search(string $searchType, string $searchKeyword, int $perPage = 6): LengthAwarePaginator
     {
         switch ($searchType) {
             case SharedContact::SEARCH_SHARED_CONTACTS:
@@ -69,10 +99,10 @@ class SharedContactsRepository
                 $searchQuerySample = SharedContact::where('shared_contacts.user_id', Auth::id());
                 break;
         }
-       return $this->searchSharedContacts($searchQuerySample, $searchKeyword, $perPage);
+        return $this->searchSharedContacts($searchQuerySample, $searchKeyword, $perPage);
     }
 
-    private function searchSharedContacts($searchQuerySample,string $searchKeyword, int $perPage): LengthAwarePaginator
+    private function searchSharedContacts($searchQuerySample, string $searchKeyword, int $perPage): LengthAwarePaginator
     {
 
         return $searchQuerySample

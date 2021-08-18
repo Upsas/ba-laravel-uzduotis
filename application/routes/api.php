@@ -1,11 +1,8 @@
 <?php
 
-use App\Http\Controllers\ApiContactsConttroller;
-use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ApiContactsController;
+use App\Http\Controllers\ApiSharedContactsController;
 use App\Http\Controllers\AuthController;
-use App\Models\SharedContact;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::resource('/contacts', ApiContactsConttroller::class);
+    Route::resource('/contacts', ApiContactsController::class);
+    Route::get('/contacts/search/{queryParam}', [ApiContactsController::class, 'search']);
+    Route::get('/sharedContacts', [ApiSharedContactsController::class, 'getSharedContacts']);
+    Route::get('/sharedContacts/users', [ApiSharedContactsController::class, 'getAccountsToShare']);
+    Route::post('/sharedContacts/share/{contactId}/{userId}', [ApiSharedContactsController::class, 'share']);
+    Route::post('/sharedContacts/add/{contactId}', [ApiSharedContactsController::class, 'addSharedContact']);
+    Route::delete('/sharedContacts/{id}', [ApiSharedContactsController::class, 'deleteSharedContact']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
