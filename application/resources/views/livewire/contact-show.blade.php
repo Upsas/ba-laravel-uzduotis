@@ -30,8 +30,8 @@
                     </td>
                 </tr>
             @empty
-                <tr>
-                    <td class="text-center p-5" colspan="3">
+                <tr wire:loading.class.delay="opacity-50">
+                    <td class="text-center p-5 bg-gray-100" colspan="3">
                         <h1 class="text-xl">Its empty</h1>
                     </td>
                 </tr>

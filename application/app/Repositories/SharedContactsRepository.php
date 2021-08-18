@@ -55,18 +55,17 @@ class SharedContactsRepository
         $this->contactsRepository->create(new Contact($contact->toArray()));
     }
 
-
     public function search(string $searchType, string $searchKeyword, int $perPage): LengthAwarePaginator
     {
         switch ($searchType) {
-            case 'searchSharedContacts':
+            case SharedContact::SEARCH_SHARED_CONTACTS:
                 $searchQuerySample = SharedContact::where('shared_contacts.user_id', Auth::id())
                     ->orWhere('shared_contacts.contact_shared_user_id', Auth::id());
                 break;
-            case 'searchSharedContactsWithMe':
+            case SharedContact::SEARCH_SHARED_CONTACTS_WITH_ME:
                 $searchQuerySample = SharedContact::where('shared_contacts.contact_shared_user_id', Auth::id());
                 break;
-            case 'searchSharedContactsWithOthers':
+            case SharedContact::SEARCH_SHARED_CONTACTS_WITH_OTHERS:
                 $searchQuerySample = SharedContact::where('shared_contacts.user_id', Auth::id());
                 break;
         }

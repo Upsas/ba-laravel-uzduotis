@@ -9,6 +9,10 @@ class SharedContact extends Model
 {
     use HasFactory;
 
+    public const SEARCH_SHARED_CONTACTS = 'searchSharedContacts';
+    public const SEARCH_SHARED_CONTACTS_WITH_ME = 'searchSharedContactsWithMe';
+    public const SEARCH_SHARED_CONTACTS_WITH_OTHERS = 'searchSharedContactsWithOthers';
+
     protected $guarded = [];
 
     public function getSharedContact(): Model

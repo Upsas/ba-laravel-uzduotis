@@ -84,14 +84,14 @@ class ContactShared extends Component
     public function filter(SharedContactsRepository $sharedContactsRepo): void
     {
         switch ($this->filterOption) {
-            case 'sharedWithMe':
+            case SharedContact::SEARCH_SHARED_CONTACTS_WITH_ME:
                 if ($this->contactSearchKeyword === null) {
                     $this->contacts = SharedContact::where('contact_shared_user_id', Auth::id())->paginate(6);
                 } else {
                     $this->contacts = $sharedContactsRepo->search('searchSharedContactsWithMe', $this->contactSearchKeyword, 6);
                 }
                 break;
-            case 'sharedWithOther':
+            case SharedContact::SEARCH_SHARED_CONTACTS_WITH_OTHERS:
                 if ($this->contactSearchKeyword === null) {
                     $this->contacts = SharedContact::where('user_id', Auth::id())->paginate(6);
                 } else {

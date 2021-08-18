@@ -3,8 +3,8 @@
         <div class="flex mx-auto  items-center w-5/6">
             <select wire:model="filterOption" class="rounded-2xl">
                 <option value="">All</option>
-                <option value="sharedWithMe">Shared with me</option>
-                <option value="sharedWithOther">Shared with other</option>
+                <option value="searchSharedContactsWithMe">Shared with me</option>
+                <option value="searchSharedContactsWithOthers">Shared with other</option>
             </select>
             <div class="mx-auto">
             <x-search></x-search>
