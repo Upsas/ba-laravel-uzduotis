@@ -24,10 +24,7 @@ class ContactForm extends Component
 
     protected $listeners = ['edit'];
 
-    protected $rules = [
-        'name' => 'required|string',
-        'number' => 'required|regex:/^(?=.*[0-9])[- +()0-9.]+$/'
-    ];
+    protected $rules = Contact::STORE_CONTACT_RULES;
 
     /**
      * @throws Exception
@@ -67,7 +64,7 @@ class ContactForm extends Component
 
         $validatedData = ($this->validate());
         $validatedData['user_id'] = Auth::id();
-        $contactsRepo->findOneById($this->contactId)->update($validatedData);
+        $contactsRepo->update($this->contactId, $validatedData);
         $this->emit('flashMessage', 'Contact successfully updated.', 'blue');
         $this->reset();
         $this->emit('refresh');
@@ -76,6 +73,7 @@ class ContactForm extends Component
     public function add(): void
     {
         $this->reset();
+        $this->resetValidation();
         $this->show = 'flex';
     }
 

@@ -27,6 +27,14 @@ class ContactsRepository
     }
 
     /**
+     * @throws Exception
+     */
+    public function update(int $contactId, array $data): void
+    {
+        $this->findOneById($contactId)->update($data);
+
+    }
+    /**
      * @param array $params (userId, perPage)
      * @return LengthAwarePaginator|null
      */
@@ -40,6 +48,10 @@ class ContactsRepository
      */
     public function destroy(int $contactId): void
     {
+        if(Contact::where('id', $contactId)->where('user_id', Auth::id())->first() === null)
+        {
+            throw new Exception("there is no contact with id: $contactId");
+        }
         SharedContact::where('contact_id', $contactId)->delete();
         if (!Contact::destroy($contactId)) {
             throw new Exception("failed to delete record with id $contactId");
@@ -51,7 +63,7 @@ class ContactsRepository
      */
     public function findOneById(int $contactId): Contact
     {
-        $contact = Contact::find($contactId);
+        $contact = Contact::where('id', $contactId)->where('user_id', Auth::id())->first();
         if (is_null($contact)) {
             throw new Exception("failed to find record with id $contactId");
         }

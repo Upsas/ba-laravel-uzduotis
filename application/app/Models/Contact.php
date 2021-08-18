@@ -20,6 +20,11 @@ class Contact extends Model
 
     protected $guarded = [];
 
+    public const STORE_CONTACT_RULES = [
+        'name' => 'required|string',
+        'number' => 'required|regex:/^(?=.*[0-9])[- +()0-9.]+$/'
+    ];
+
     public function getSharedContact(): ?Model
     {
         return $this->hasMany(SharedContact::class, 'contact_id', 'id')->first();
