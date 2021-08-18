@@ -32,8 +32,8 @@ class ContactsRepository
     public function update(int $contactId, array $data): void
     {
         $this->findOneById($contactId)->update($data);
-
     }
+
     /**
      * @param array $params (userId, perPage)
      * @return LengthAwarePaginator|null

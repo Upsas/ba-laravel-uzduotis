@@ -29,10 +29,7 @@ class ContactShow extends Component
         $this->showModal = $showModal;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function delete(int $contactId, ContactsRepository $contactsRepo): void
+    public function delete(): void
     {
         $this->emit('flashMessage', 'Contact successfully deleted.', 'red');
         $this->reset();
