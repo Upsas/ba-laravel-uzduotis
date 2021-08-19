@@ -55,7 +55,7 @@ class LivewireContactSharedTest extends TestCase
     public function testCanDeleteSharedContact(): void
     {
 
-        $newUser = $this->actAsUser();
+        $newUser = User::factory()->create();
         $contact = $this->createContact();
         $sharedContact = SharedContact::create([
             'user_id' => Auth::id(),
@@ -70,7 +70,7 @@ class LivewireContactSharedTest extends TestCase
 
         $this->assertDeleted($sharedContact);
 
-        Contact::where('user_id', Auth::id())->first()->delete();
+        User::destroy($newUser->getAttribute('id'));
         $this->deleteContactAndUser($contact, $newUser);
     }
 
