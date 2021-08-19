@@ -24,9 +24,9 @@ class ApiContactsController extends Controller
     {
         $data = $this->contactsRepository->getAllContactsByUserIdWithPagination(['userId' => Auth::id(), 'perPage' => 12]);
         if ($data->isEmpty()) {
-            return response(['message' => 'There is no contacts']);
+            return \response(['message' => 'There is no contacts']);
         }
-        return $data;
+         return \response($data);
     }
 
     /**
@@ -41,7 +41,7 @@ class ApiContactsController extends Controller
         } catch (Exception $e) {
             return \response(['message' => $e->getMessage()]);
         }
-        return \response([$createdContact],201);
+        return \response($createdContact,201);
     }
 
     /**
@@ -54,7 +54,8 @@ class ApiContactsController extends Controller
         } catch (Exception $e) {
             return \response(['message' => $e->getMessage()]);
         }
-        return \response([$contact]);
+
+        return \response($contact);
     }
 
     /**

@@ -70,7 +70,7 @@ class ApiSharedContactsController extends Controller
             }
             unset($item['UserId']);
         }
-        return response([$data]);
+        return response($data);
     }
 
     /**

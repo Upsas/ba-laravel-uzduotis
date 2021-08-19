@@ -52,7 +52,6 @@ class ContactsRepository
         {
             throw new Exception("there is no contact with id: $contactId");
         }
-        SharedContact::where('contact_id', $contactId)->delete();
         if (!Contact::destroy($contactId)) {
             throw new Exception("failed to delete record with id $contactId");
         }
