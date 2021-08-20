@@ -62,11 +62,11 @@ class ApiSharedContactsController extends Controller
         if ($data->isEmpty()) {
             return response(['message' => 'There is no contacts']);
         }
-
         foreach ($data as $item) {
             if ($item['Contact Shared With'] === Auth::user()->name) {
+
                 $name = User::where('id', $item['UserId'])->first('name');
-                $item['Contact Shared With'] = "ME From:  $name->name";
+                $item['Contact Shared With'] = "ME From: $name->name";
             }
             unset($item['UserId']);
         }
