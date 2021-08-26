@@ -13,10 +13,10 @@ $ composer install
 ```
 #### Third step: set up env variables in docker-compose.yml file
 ```
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: [your db name]
-      MYSQL_USER: [your db user]
-      MYSQL_PASSWORD: [your db user password]
+MYSQL_ROOT_PASSWORD: root
+MYSQL_DATABASE: [your db name]
+MYSQL_USER: [your db user]
+MYSQL_PASSWORD: [your db user password]
 ```
 #### Change ./application/env.example to ./application/env and set same env variables in file
 

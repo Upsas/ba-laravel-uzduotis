@@ -44,6 +44,13 @@ curl --location -g --request GET 'http://localhost/api/contacts' \
 --header 'Accept: application/json' -H 'Authorization: Bearer {token}'
 ```
 
+#### Logout:
+
+```
+curl --location -g --request POST 'http://localhost/api/logout' \
+--header 'Accept: application/json' -H 'Authorization: Bearer {token}'
+```
+
 #### Get one contact:
 
 ```
