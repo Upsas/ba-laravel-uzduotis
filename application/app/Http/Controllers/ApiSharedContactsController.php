@@ -34,7 +34,7 @@ class ApiSharedContactsController extends Controller
 
     public function getAccountsToShare(): Response|Application|ResponseFactory
     {
-        return \response([User::all('id', 'name')]);
+        return \response([User::where('id', '!=', Auth::id())->get(['id', 'name'])]);
     }
 
     /**

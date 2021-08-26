@@ -27,7 +27,7 @@
                         <div class="flex flex-row">
                             <label for="cars">Choose a user to share a contact:</label>
                             <select class="w-1/2 ml-4" wire:model.defer="userId">
-                                <option disabled selected value="">Please select</option>
+                                <option  hidden>Please select</option>
                             @forelse($users as $user)
                                     <option value="{{$user->id}}">{{$user->name}}</option>
                                 @empty

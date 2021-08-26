@@ -20,11 +20,11 @@ class ContactFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->name(),
-            'number' => $this->faker->phoneNumber(),
+            'number' => $this->faker->unique()->phoneNumber(),
             'user_id' => $this->faker->numberBetween(1, 10)
         ];
     }

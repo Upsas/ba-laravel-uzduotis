@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\SharedContact;
 use App\Repositories\ContactsRepository;
+use App\Repositories\SharedContactsRepository;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -29,8 +31,16 @@ class ContactShow extends Component
         $this->showModal = $showModal;
     }
 
-    public function delete(): void
+    /**
+     * @throws Exception
+     */
+    public function delete(int $id, ContactsRepository $contactsRepo, SharedContactsRepository $sharedContactsRepo): void
     {
+        $sharedContact = SharedContact::where('user_id', Auth::id())->where('contact_id', $id)->first();
+        if ($sharedContact !== null) {
+            $sharedContactsRepo->destroy($sharedContact->id);
+        }
+        $contactsRepo->destroy($id);
         $this->emit('flashMessage', 'Contact successfully deleted.', 'red');
         $this->reset();
     }

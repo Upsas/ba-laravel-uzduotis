@@ -15,6 +15,7 @@ services:
       APPLICATION_ENV: development
       PHP_IDE_CONFIG: "serverName=localhost"
       XDEBUG_CONFIG: "remote_host=host.docker.internal"
+    container_name: ba_laravel_task
     links:
       - db
 

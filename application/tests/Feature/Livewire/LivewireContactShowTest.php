@@ -41,7 +41,7 @@ class LivewireContactShowTest extends TestCase
             ->assertEmitted('edit', $contact->getAttribute('id'))
             ->call('share', $contact->getAttribute('id'))
             ->assertEmitted('showShareForm', $contact->getAttribute('id'))
-            ->call('delete')
+            ->call('delete', $contact->getAttribute('id'))
             ->assertEmitted('flashMessage');
 
         $this->deleteContactAndUser($contact, $newUser);
