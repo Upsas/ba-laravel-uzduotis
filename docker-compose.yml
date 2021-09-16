@@ -7,7 +7,7 @@ services:
     volumes:
       - ./application/:/var/www/html/
     ports:
-      - 80:80
+      - "80:80"
     depends_on:
       - db
     environment:
@@ -18,13 +18,15 @@ services:
     container_name: ba_laravel_task
     links:
       - db
+    networks:
+      - web
 
   db:
     image: mysql:latest
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - ./db:/var/lib/mysql
     environment:
@@ -32,3 +34,18 @@ services:
       MYSQL_DATABASE: ba_laravel
       MYSQL_USER: devuser
       MYSQL_PASSWORD: devpass
+    networks:
+      - web
+
+  mailhog_server:
+    container_name: cont_mailhog
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - web
+
+networks:
+  web:
